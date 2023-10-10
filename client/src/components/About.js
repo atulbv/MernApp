@@ -42,7 +42,7 @@ const About = () => {
                 class="col-lg-9 mx-auto col-md-10 col-12 mt-lg-5 text-center"
                 data-aos="fade-up"
               >
-                <h4 class="blog-category text-info">Atul MERN Application</h4>
+                <h4 class="blog-category text-info">Atul MERN App</h4>
 
                 <h1>Full stack developer</h1>
 
