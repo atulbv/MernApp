@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 const PORT = 4202;
@@ -9,6 +10,7 @@ require('./db/conn');
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
+app.use(cookieParser());
 //const User = require('./model/userSchema');
 app.use(require('./router/auth'));
 
@@ -19,5 +21,5 @@ app.get('/', (req, res) => {
 console.log('Successfully work!!');
 
 app.listen(PORT, () => {
-  console.log('Server is running at port no ${PORT} ');
+  console.log('Server is running at port no ${PORT} ', PORT);
 });

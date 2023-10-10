@@ -11,21 +11,23 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route path="/About">
-        <About />
-      </Route>
-      <Route path="/Contact">
-        <Contact />
-      </Route>
-      <Route path="/Login">
-        <Login />
-      </Route>
-      <Route path="/Signup">
-        <Signup />
-      </Route>
+      <switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/about">
+          <About />
+        </Route>
+        <Route path="/contact">
+          <Contact />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/signup">
+          <Signup />
+        </Route>
+      </switch>
     </div>
   );
 };

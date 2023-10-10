@@ -54,8 +54,8 @@ router.post('/signin', async (req, res) => {
       const token = await userLogin.generateAuthToken();
       console.log(token);
 
-      res.cookie('jwttoken', token, {
-        expires: new Date(Date.now() + 300000),
+      res.cookie('jwtoken', token, {
+        expires: new Date(Date.now() + 30000000),
         httpOnly: true,
       });
 
@@ -73,7 +73,7 @@ router.post('/signin', async (req, res) => {
 });
 
 router.get('/about', authenticate, (req, res) => {
-  res.send(req.rootuser);
+  res.send(req.rootUser);
 });
 
 module.exports = router;

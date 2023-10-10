@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import MaleAvatar from '../images/male-avatar.png';
 import { useHistory } from 'react-router-dom';
 
 const About = () => {
   const history = useHistory();
+  const [userdata, setUserData] = useState({});
   const callAboutPage = async () => {
     try {
-      const res = await fetch('./about', {
+      const res = await fetch('/about', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -16,7 +17,7 @@ const About = () => {
       });
       const data = await res.json();
       console.log(data);
-
+      setUserData(data);
       if (!res.status === 200) {
         const err = new Error(res.error);
         throw err;
@@ -41,15 +42,15 @@ const About = () => {
                 class="col-lg-9 mx-auto col-md-10 col-12 mt-lg-5 text-center"
                 data-aos="fade-up"
               >
-                <h4 class="blog-category text-info">Atul Technical</h4>
+                <h4 class="blog-category text-info">Atul MERN Application</h4>
 
-                <h1>MERN stack and Vue developer</h1>
+                <h1>Full stack developer</h1>
 
                 <div class="client-info">
                   <div class="d-flex justify-content-center align-items-center mt-3">
                     <img src={MaleAvatar} class="img-fluid" alt="male avatar" />
 
-                    <p>Atul Vernekar</p>
+                    <p>Hi, My User Id is {userdata.name}</p>
                   </div>
                 </div>
               </div>
