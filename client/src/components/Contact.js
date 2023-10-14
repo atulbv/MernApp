@@ -1,7 +1,69 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/main.css';
 
 const Contact = () => {
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const userContact = async () => {
+    try {
+      const res = await fetch('/getdata', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      setUserData({
+        ...userData,
+        name: data.name,
+        email: data.email,
+      });
+    } catch (error) {}
+  };
+  const handleInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const contactFormClick = async (e) => {
+    e.preventDefault();
+    const { name, email, message } = userData;
+    try {
+      const res = await fetch('/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (!data) {
+          console.log('Message not sent');
+        } else {
+          alert('Message sent');
+          setUserData({ name: '', email: '', message: '' });
+        }
+      } else {
+        console.error('Failed to send the message. Status:', res.status);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+  useEffect(() => {
+    userContact();
+  }, []);
   return (
     <div>
       <section className="contact section">
@@ -29,13 +91,15 @@ const Contact = () => {
             </div>
 
             <div className="col-lg-8 mx-auto col-md-10 col-12">
-              <form method="post" className="contact-form">
+              <form className="contact-form">
                 <div className="row">
                   <div class="col-lg-6 col-12">
                     <input
                       type="text"
                       className="form-control"
                       name="name"
+                      value={userData.name}
+                      onChange={handleInput}
                       placeholder="Name"
                     />
                   </div>
@@ -45,6 +109,8 @@ const Contact = () => {
                       type="email"
                       className="form-control"
                       name="email"
+                      value={userData.email}
+                      onChange={handleInput}
                       placeholder="Email"
                     />
                   </div>
@@ -54,6 +120,8 @@ const Contact = () => {
                       className="form-control"
                       rows="6"
                       name="message"
+                      value={userData.message}
+                      onChange={handleInput}
                       placeholder="Message"
                     ></textarea>
                   </div>
@@ -63,7 +131,7 @@ const Contact = () => {
                       type="submit"
                       className="form-control"
                       id="submit-button"
-                      name="submit"
+                      onClick={contactFormClick}
                     >
                       Send Message
                     </button>

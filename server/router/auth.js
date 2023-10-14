@@ -5,6 +5,7 @@ const router = express.Router();
 require('../db/conn');
 const User = require('../model/userSchema');
 const authenticate = require('../middleware/authenticate');
+const nodemailer = require('nodemailer');
 
 router.get('/', (req, res) => {});
 
@@ -74,6 +75,40 @@ router.post('/signin', async (req, res) => {
 
 router.get('/about', authenticate, (req, res) => {
   res.send(req.rootUser);
+});
+
+router.get('/getdata', (req, res) => {
+  res.send(req.rootUser);
+});
+
+router.post('/contact', async (req, res) => {
+  const { name, email, message } = req.body;
+  if (!name || !email || !message) {
+    return res.json({ error: 'please filled the contact form' });
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'avtechnical15@gmail.com',
+      pass: 'tfyi bqcy csxj rpok',
+    },
+  });
+  const textMessage = `Name: ${name}\nEmail: ${email}\nMessage: ${message}`;
+  const mailOptions = {
+    from: 'avtechnical15@gmail.com',
+    to: 'Vernekaratul@gmail.com',
+    subject: 'AVTechnical MERN Application',
+    text: textMessage,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 });
 
 module.exports = router;
